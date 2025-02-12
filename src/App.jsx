@@ -10,7 +10,7 @@ function createRandomPost() {
   };
 }
 
-function App() {
+const App = function App() {
   const [isFakeDark, setIsFakeDark] = useState(false);
   // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
   useEffect(
@@ -20,27 +20,24 @@ function App() {
     [isFakeDark]
   );
   return (
-    <PostProvider>
-      <section>
-        <button
-          onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
-          className="btn-fake-dark-mode"
-        >
-          {isFakeDark ? "☀️" : "🌙"}
-        </button>
+    <section>
+      <button
+        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
+        className="btn-fake-dark-mode"
+      >
+        {isFakeDark ? "☀️" : "🌙"}
+      </button>
 
-        {/* <Test /> */}
+      {/* <Test /> */}
+      <PostProvider>
         <Header />
-        <Main>
-          <FormAddPost />
-          <Posts />
-        </Main>
+        <Main />
         <Archive />
         <Footer />
-      </section>
-    </PostProvider>
+      </PostProvider>
+    </section>
   );
-}
+};
 function Header() {
   const { onClearPosts } = usePostContext();
   return (
@@ -73,9 +70,14 @@ function Results() {
   return <p>🚀 {searchedPosts.length} atomic posts found</p>;
 }
 
-function Main({ children }) {
-  return <main>{children}</main>;
-}
+const Main = memo(function Main() {
+  return (
+    <main>
+      <FormAddPost />
+      <Posts />
+    </main>
+  );
+});
 function Posts() {
   return (
     <section>
